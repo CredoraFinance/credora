@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, models } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const LoanSchema = new Schema(
   {
@@ -24,6 +24,13 @@ const LoanSchema = new Schema(
 
 export type LoanDocument = mongoose.InferSchemaType<typeof LoanSchema> & { _id: mongoose.Types.ObjectId };
 
-export default models.Loan || model('Loan', LoanSchema);
+let LoanModel: mongoose.Model<LoanDocument>;
+try {
+  LoanModel = mongoose.model<LoanDocument>('Loan');
+} catch {
+  LoanModel = mongoose.model<LoanDocument>('Loan', LoanSchema);
+}
+
+export default LoanModel;
 
 

@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, models } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const PoolSchema = new Schema(
   {
@@ -23,6 +23,13 @@ const PoolSchema = new Schema(
 
 export type PoolDocument = mongoose.InferSchemaType<typeof PoolSchema> & { _id: mongoose.Types.ObjectId };
 
-export default models.Pool || model('Pool', PoolSchema);
+let PoolModel: mongoose.Model<PoolDocument>;
+try {
+  PoolModel = mongoose.model<PoolDocument>('Pool');
+} catch {
+  PoolModel = mongoose.model<PoolDocument>('Pool', PoolSchema);
+}
+
+export default PoolModel;
 
 
